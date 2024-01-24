@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Regular expression test</title>
+  </head>
+  <body>
+    <div id="textcontent"></div>
+    <input type="text" id="regexpattern" value="^.*$" style="width:100%" onchange="Test()" oninput="Test()">
+    <br>
+    <textarea id="regextest" rows="20" cols="50" style="width:100%" onchange="Test()" oninput="Test()"></textarea>
+    <br>
+    <pre id="regexinfo"></pre>
+
+    <script type='text/javascript'>
+
+        const RPattern = document.getElementById("regexpattern");
+        const Rtest = document.getElementById("regextest");
+        const RInfo = document.getElementById("regexinfo");
+
+        function Test()
+        {
+            const TextPattern = RPattern.value;
+            const TestCases = Rtest.value.split('\n');
+            const TestCasesProg = Rtest.value.split('\n');
+            for (let I = 0; I < TestCases.length; I++)
+            {
+                try
+                {
+                    if (TestCases[I].match(TextPattern))
+                    {
+                        TestCases[I] = "Pass: " + TestCases[I];
+                    }
+                    else
+                    {
+                        TestCases[I] = "Fail: " + TestCases[I];
+                    }
+                }
+                catch
+                {
+                    TestCases[I] = "Error: " + TestCases[I];
+                }
+            }
+            RInfo.innerText = TestCases.join("\n") + "\n\n01\n1" + TextPattern + "\n2" + TestCasesProg.join("\n2");
+        }
+        
+        Test();
+
+    </script>
+  </body>
+</html>

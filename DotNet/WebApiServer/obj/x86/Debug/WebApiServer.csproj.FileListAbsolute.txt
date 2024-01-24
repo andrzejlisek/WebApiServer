@@ -1,0 +1,10 @@
+/media/xxx/WORK1/__ToBackup/Develop/HTML/WebAssembly/WebSocket/WebApiServer/WebApiServer/WebApiServer/bin/Debug/WebApiServer.exe
+/media/xxx/WORK1/__ToBackup/Develop/HTML/WebAssembly/WebSocket/WebApiServer/WebApiServer/WebApiServer/bin/Debug/WebApiServer.pdb
+/media/xxx/WORK1/__ToBackup/Develop/HTML/WebAssembly/WebSocket/WebApiServer/WebApiServer/WebApiServer/obj/x86/Debug/WebApiServer.csproj.CoreCompileInputs.cache
+/media/xxx/WORK1/__ToBackup/Develop/HTML/WebAssembly/WebSocket/WebApiServer/WebApiServer/WebApiServer/obj/x86/Debug/WebApiServer.exe
+/media/xxx/WORK1/__ToBackup/Develop/HTML/WebAssembly/WebSocket/WebApiServer/WebApiServer/WebApiServer/obj/x86/Debug/WebApiServer.pdb
+/media/xxx/WORK1/__ToBackup/Develop/HTML/WebAssembly/WebSocket/WebSocketDotNet/WebApiServer/WebApiServer/WebApiServer/bin/Debug/WebApiServer.exe
+/media/xxx/WORK1/__ToBackup/Develop/HTML/WebAssembly/WebSocket/WebSocketDotNet/WebApiServer/WebApiServer/WebApiServer/bin/Debug/WebApiServer.pdb
+/media/xxx/WORK1/__ToBackup/Develop/HTML/WebAssembly/WebSocket/WebSocketDotNet/WebApiServer/WebApiServer/WebApiServer/obj/x86/Debug/WebApiServer.csproj.CoreCompileInputs.cache
+/media/xxx/WORK1/__ToBackup/Develop/HTML/WebAssembly/WebSocket/WebSocketDotNet/WebApiServer/WebApiServer/WebApiServer/obj/x86/Debug/WebApiServer.exe
+/media/xxx/WORK1/__ToBackup/Develop/HTML/WebAssembly/WebSocket/WebSocketDotNet/WebApiServer/WebApiServer/WebApiServer/obj/x86/Debug/WebApiServer.pdb
