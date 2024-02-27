@@ -30,21 +30,6 @@ function CorrectEscape(S)
 }
 
 
-function BtnTest(X)
-{
-    if (X == 1)
-    {
-        WSIO.Test(1000, "").then(
-        () => {
-            Info("Obietnica Test OK");
-        }
-        ).catch((ErrMsg) => {
-            Info("Obietnica Test ERROR: " + ErrMsg);
-        });
-    }
-}
-
-
 function GetFilesBtn()
 {
     return GetFiles(document.getElementById("FileName").value);
@@ -174,7 +159,7 @@ function BtnConnOpen()
     WSIO.ConnOpen(document.getElementById("ConnAddr").value, "appl", true).then(
     (Params) => {
         ConnId = Params.ConnId;
-        Info("Otwarcie polaczenia: " + Params.ConnId);
+        Info("Connection opening: " + Params.ConnId);
     }
     ).catch((ErrMsg) => {
         Info("ConnOpen error: " + ErrMsg);
@@ -185,7 +170,7 @@ function BtnConnInfo()
 {
     WSIO.ConnInfo(ConnId).then(
     (Params) => {
-        Info("Stan polaczenia: " + Params.Status + " " + Params.Push);
+        Info("Connection state: " + Params.Status + " " + Params.Push);
     }
     ).catch((ErrMsg) => {
         Info("ConnInfo error: " + ErrMsg);
@@ -196,7 +181,7 @@ function BtnConnClose()
 {
     WSIO.ConnClose(ConnId).then(
     (Params) => {
-        Info("Zamkniecie polaczenia: ");
+        Info("Connection closing");
     }
     ).catch((ErrMsg) => {
         Info("ConnClose error: " + ErrMsg);
@@ -207,7 +192,7 @@ function BtnConnSend()
 {
     WSIO.ConnSend(ConnId, StringEncode(document.getElementById("FileText").value)).then(
     (Params) => {
-        Info("Wyslanie: ");
+        Info("Sending");
     }
     ).catch((ErrMsg) => {
         Info("ConnSend error: " + ErrMsg);

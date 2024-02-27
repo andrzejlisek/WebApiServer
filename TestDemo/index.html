@@ -6,38 +6,67 @@
     <title>Test</title>
   </head>
   <body>
+    <h1>Server status information</h1>
+    In this section, there will be displayed some informations about server status.<br>
     <div id="textcontent"></div>
-    <input type="text" id="SrvPort" value="ws://localhost:8888" size="20">
-    <input type="button" value="Open" onclick="AppOpen()">
-    <input type="button" value="Close" onclick="AppClose()">
-    
-    <br>
-    <br>
-    <input type="text" id="FileName" size="50">
-    <input type="button" value="Load" onclick="FileLoad()">
-    <input type="button" value="Save" onclick="FileSave()">
-    <input type="button" value="Delete" onclick="FileDelete()">
-    <input type="button" value="Dir" onclick="GetFilesBtn()">
-    <br>
-    <br>
-    <input type="text" id="ConnAddr" size="50" value="/usr/bin/telnet localhost">
-    <input type="button" value="Open" onclick="BtnConnOpen()">
-    <input type="button" value="Status" onclick="BtnConnInfo()">
-    <input type="button" value="Close" onclick="BtnConnClose()">
-    <input type="button" value="Send" onclick="BtnConnSend()">
-    <input type="button" value="Recv" onclick="BtnConnRecv()">
-    <br>
-    <br>
-    <input type="button" value="Test1" onclick="BtnTest(1)">
-    <input type="button" value="Test2" onclick="BtnTest(2)">
-    <input type="button" value="Test3" onclick="BtnTest(3)">
-    <br>
-    <textarea id="FileText" rows="10" cols="50"></textarea>
-    <br>
-    <br>
 
-    <input type="text" id="FileFilter" value="^.*$" size="50">
+    <h1>Server connection</h1>
+    <ul>
+        <li>Server address: <input type="text" id="SrvPort" value="ws://localhost:8888" size="20"></li>
+        <li><input type="button" value="Open connection" onclick="AppOpen()"> - Open connection with server.</li>
+        <li><input type="button" value="Close connection" onclick="AppClose()"> - Close connection with server.</li>
+    </ul>
+    
+    <h1>File or directory handling</h1>
+    <ul>
+        <li>File name: <input type="text" id="FileName" size="50"></li>
+        <li><input type="button" value="Load" onclick="FileLoad()"> - Load text from provided file into text field.</li>
+        <li><input type="button" value="Save" onclick="FileSave()"> - Save text from text field into provided file.</li>
+        <li><input type="button" value="Delete" onclick="FileDelete()"> - Delete provided file or directory.</li>
+        <li><input type="button" value="Dir" onclick="GetFilesBtn()"> - Get file list from directory provided in <b>File name</b> field, leave this blank for list root directory.</li>
+    </ul>
+
+    <h1>Text field</h1>
+    <textarea id="FileText" rows="10" cols="50"></textarea>
+
+    <h1>Directory browser</h1>
+
+    File filter as regular expression: <input type="text" id="FileFilter" value="^.*$" size="50">
     <div id="FileDemo"></div>
+
+    <h1>Typical test scenario</h1>
+    <ol>
+        <li><b>Server connection</b></li>
+        <ol>
+            <li>Input WebSocket address in the <b>Server address</b> field.</li>
+            <li>Click the <b>Open connection</b> button.</li>
+        </ol>
+        <li><b>File or directory handling</b></li>
+        <ol>
+            <li>Be sure, that the <b>File name</b> field is blank.</li>
+            <li>Click the <b>Dir</b> button.</li>
+            <li>The root directory will be shown in the <b>Directory browser</b> section.</li>
+        </ol>
+        <li><b>Directory browser</b></li>
+        <ol>
+            <li>Click the directory name in the table, the sub-directory will be shown.</li>
+            <li>You can click the <b>?</b> or directory above table for show root directory or upper directory.</li>
+            <li>If you click the file name, the name will be written in <b>File or directory handling</b> section.</li>
+            <li>Click any text file name.</li>
+        </ol>
+        <li><b>File or directory handling</b></li>
+        <ol>
+            <li>Be sure, that in the <b>File name</b> field is file name of previously clicked file.</li>
+            <li>Click the <b>Load</b> button. The text from file will be loaded into the text field.</li>
+            <li>Change manually contents of the text field.</li>
+            <li>Click the <b>Save</b> button. The text from field will be saved into the file.</li>
+        </ol>
+        <li><b>Server connection</b></li>
+        <ol>
+            <li>Click the <b>Close connection</b> button to disconnect from server.</li>
+        </ol>
+    </ol>
+
 
     <script type='text/javascript' src="demo.js"></script>
     <script type='text/javascript' src="WSIOKV.js"></script>
@@ -99,8 +128,6 @@
         {
             WSIO.Close();
         }
-        
-        AppOpen();
 
     </script>
   </body>
