@@ -8,6 +8,7 @@ namespace WebApiServer
     public class CommandArgs
     {
         static KeyValue CmdArgs;
+        public static int Debug = 0;
         public static int PortNo = 0;
         public static string[] PathMount = new string[26];
         public static string RegCmd = "^$"; // "^.*$"
@@ -193,6 +194,7 @@ namespace WebApiServer
             PathDirNotSlash = !PathDirSep.Equals("/");
 
             PortNo = CmdArgs.ParamGetI("PORT");
+            Debug = CmdArgs.ParamGetI("DEBUG");
             if (CmdArgs.ParamExists("CMD"))
             {
                 RegCmd = CmdArgs.ParamGetS("CMD");
@@ -207,6 +209,10 @@ namespace WebApiServer
             }
 
             Console.WriteLine();
+            if (Debug > 0)
+            {
+                Console.WriteLine("Debug: " + Debug.ToString());
+            }
             Console.WriteLine("Server port: " + PortNo.ToString());
             Console.WriteLine("Command pattern: " + RegCmd);
             Console.WriteLine("Network pattern: " + RegNet);

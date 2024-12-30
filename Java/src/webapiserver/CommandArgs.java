@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class CommandArgs
 {
     static KeyValue CmdArgs;
+    static int Debug = 0;
     static int PortNo = 0;
     static String[] PathMount = new String[26];
     static String RegCmd = "^$"; // "^.*$"
@@ -202,6 +203,7 @@ public class CommandArgs
         PathDirNotSlash = !PathDirSep.equals("/");
 
         PortNo = CmdArgs.ParamGetI("PORT");
+        Debug = CmdArgs.ParamGetI("DEBUG");
         if (CmdArgs.ParamExists("CMD"))
         {
             RegCmd = CmdArgs.ParamGetS("CMD");
@@ -216,6 +218,10 @@ public class CommandArgs
         }
 
         System.out.println();
+        if (Debug > 0)
+        {
+            System.out.println("Debug: " + String.valueOf(Debug));
+        }
         System.out.println("Server port: " + String.valueOf(PortNo));
         System.out.println("Command pattern: " + RegCmd);
         System.out.println("Network pattern: " + RegNet);

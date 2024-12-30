@@ -31,6 +31,24 @@ public class ApiConnApp extends ApiConn
                 int Avail = StrO.read(StreamBufO);
                 if (Avail > 0)
                 {
+                    if (CommandArgs.Debug > 0)
+                    {
+                        System.out.print("> ");
+                        for (int i = 0; i < Avail; i++)
+                        {
+                            if ((StreamBufO[i] >= 33) && (StreamBufO[i] <= 126))
+                            {
+                                System.out.print((char)StreamBufO[i]);
+                            }
+                            else
+                            {
+                                System.out.print("<");
+                                System.out.print((int)(StreamBufO[i] & 0xFF));
+                                System.out.print(">");
+                            }
+                        }
+                        System.out.println();
+                    }
                     RecvProcess(StreamBufO, Avail);
                 }
                 else
@@ -65,6 +83,24 @@ public class ApiConnApp extends ApiConn
                 int Avail = StrE.read(StreamBufE);
                 if (Avail > 0)
                 {
+                    if (CommandArgs.Debug > 0)
+                    {
+                        System.out.print("> ");
+                        for (int i = 0; i < Avail; i++)
+                        {
+                            if ((StreamBufE[i] >= 33) && (StreamBufE[i] <= 126))
+                            {
+                                System.out.print((char)StreamBufE[i]);
+                            }
+                            else
+                            {
+                                System.out.print("<");
+                                System.out.print(((int)StreamBufE[i] & 0xFF));
+                                System.out.print(">");
+                            }
+                        }
+                        System.out.println();
+                    }
                     RecvProcess(StreamBufE, Avail);
                 }
                 else
@@ -215,6 +251,24 @@ public class ApiConnApp extends ApiConn
 
     public void Send(byte[] Data) throws Exception
     {
+        if (CommandArgs.Debug > 0)
+        {
+            System.out.print("< ");
+            for (int i = 0; i < Data.length; i++)
+            {
+                if ((Data[i] >= 33) && (Data[i] <= 126))
+                {
+                    System.out.print((char)Data[i]);
+                }
+                else
+                {
+                    System.out.print("<");
+                    System.out.print(((int)Data[i] & 0xFF));
+                    System.out.print(">");
+                }
+            }
+            System.out.println();
+        }
         StrI.write(Data);
         StrI.flush();
     }

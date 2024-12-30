@@ -24,6 +24,24 @@ namespace WebApiServer
                     int Avail = StrO.Read(StreamBufO, 0, StreamBufO.Length);
                     if (Avail > 0)
                     {
+                        if (CommandArgs.Debug > 0)
+                        {
+                            Console.Write("> ");
+                            for (int i = 0; i < Avail; i++)
+                            {
+                                if ((StreamBufO[i] >= 33) && (StreamBufO[i] <= 126))
+                                {
+                                    Console.Write((char)StreamBufO[i]);
+                                }
+                                else
+                                {
+                                    Console.Write("<");
+                                    Console.Write((int)StreamBufO[i]);
+                                    Console.Write(">");
+                                }
+                            }
+                            Console.WriteLine();
+                        }
                         RecvProcess(StreamBufO, Avail);
                     }
                     else
@@ -58,6 +76,24 @@ namespace WebApiServer
                     int Avail = StrE.Read(StreamBufE, 0, StreamBufE.Length);
                     if (Avail > 0)
                     {
+                        if (CommandArgs.Debug > 0)
+                        {
+                            Console.Write("> ");
+                            for (int i = 0; i < Avail; i++)
+                            {
+                                if ((StreamBufO[i] >= 33) && (StreamBufE[i] <= 126))
+                                {
+                                    Console.Write((char)StreamBufE[i]);
+                                }
+                                else
+                                {
+                                    Console.Write("<");
+                                    Console.Write((int)StreamBufE[i]);
+                                    Console.Write(">");
+                                }
+                            }
+                            Console.WriteLine();
+                        }
                         RecvProcess(StreamBufE, Avail);
                     }
                     else
@@ -164,7 +200,7 @@ namespace WebApiServer
             App = new Process();
             while (Cmd.Count > 2)
             {
-                Cmd[2] = Cmd[1] + " " + Cmd[2];
+                Cmd[1] = Cmd[1] + " " + Cmd[2];
                 Cmd.RemoveAt(1);
             }
             if (Cmd.Count < 2)
@@ -230,6 +266,24 @@ namespace WebApiServer
 
         public override void Send(byte[] Data)
         {
+            if (CommandArgs.Debug > 0)
+            {
+                Console.Write("< ");
+                for (int i = 0; i < Data.Length; i++)
+                {
+                    if ((Data[i] >= 33) && (Data[i] <= 126))
+                    {
+                        Console.Write((char)Data[i]);
+                    }
+                    else
+                    {
+                        Console.Write("<");
+                        Console.Write((int)Data[i]);
+                        Console.Write(">");
+                    }
+                }
+                Console.WriteLine();
+            }
             StrI.Write(Data, 0, Data.Length);
         }
     }
