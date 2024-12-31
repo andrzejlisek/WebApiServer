@@ -8,6 +8,7 @@ package webapiserver;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -24,7 +25,46 @@ public class ApiFile
     
     File F = null;
     RandomAccessFile FS;
+    public int IdleCounter = 0;
 
+    
+    public static void IdleTimerTick()
+    {
+        if (CommandArgs.Debug == 2)
+        {
+            System.out.println("File IdleTimer tick begin");
+        }
+        ArrayList<Integer> TimeoutId = new ArrayList<Integer>();
+        ApiFile_.forEach((Key, Value) -> {
+            Value.IdleCounter++;
+            if ((CommandArgs.Timeout > 0) && (Value.IdleCounter >= CommandArgs.Timeout))
+            {
+                TimeoutId.add(Key);
+            }
+            if (CommandArgs.Debug == 2)
+            {
+                System.out.println("File " + Key + " idle: " + Value.IdleCounter);
+            }
+        });
+        if (TimeoutId.size() > 0)
+        {
+            KeyValue XI = new KeyValue();
+            KeyValue XO = new KeyValue();
+            for (int i = 0; i < TimeoutId.size(); i++)
+            {
+                XI.ParamSet("FileId", TimeoutId.get(i));
+                FileClose(XI, XO);
+                if (CommandArgs.Debug == 2)
+                {
+                    System.out.println("File " + TimeoutId.get(i) + " closed");
+                }
+            }
+        }
+        if (CommandArgs.Debug == 2)
+        {
+            System.out.println("File IdleTimer tick end");
+        }
+    }
     
     private static boolean FileDeleteDir(File FileName)
     {
@@ -77,6 +117,7 @@ public class ApiFile
             ApiFile __ = new ApiFile();
 
             __.F = new File(FileName);
+            __.IdleCounter = 0;
             if (Write)
             {
                 File FileDir = new File(__.F.getParent());
@@ -114,6 +155,7 @@ public class ApiFile
         if (ApiFile_.containsKey(FileId))
         {
             ApiFile __ = ApiFile_.get(FileId);
+            __.IdleCounter = 0;
             try
             {
                 MessageO.ParamSet("Size", __.FS.length());
@@ -144,6 +186,7 @@ public class ApiFile
         long Pos = MessageI.ParamGetI("Position");
         if (ApiFile_.containsKey(FileId))
         {
+            ApiFile_.get(FileId).IdleCounter = 0;
             try
             {
                 ApiFile_.get(FileId).FS.seek(Pos);
@@ -185,6 +228,7 @@ public class ApiFile
         if (ApiFile_.containsKey(FileId))
         {
             ApiFile __ = ApiFile_.get(FileId);
+            __.IdleCounter = 0;
             try
             {
                 byte[] Temp = new byte[Count];
@@ -209,6 +253,7 @@ public class ApiFile
         if (ApiFile_.containsKey(FileId))
         {
             ApiFile __ = ApiFile_.get(FileId);
+            __.IdleCounter = 0;
             try
             {
                 byte[] Temp = KeyValue.BinaryDecode(Data);

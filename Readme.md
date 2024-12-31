@@ -35,6 +35,7 @@ The application has command line as **parameter=value** pattern\. You have to ru
 * **PORT** \- Server listening port number\. If not specified, program will be run in regular expression test mode\.
 * **CMD** \- Allowed command regular expression\. If not specified, none command will be available\.
 * **NET** \- Allowed network addresses regular expression\. If not specified, none address will be available\.
+* **TIMEOUT** \- If greater than **0**, there is the timeout of idle or connection idle in minutes\. Idle and unused files and connections will be closed after the time\.
 * **Single letter** \- Directory mounting\. You can specify any letter and any directory\. Mounting whole system is not possible and will be potentially insecure\.
 
 If value contains spaces or special characters, you can use the quotation characters\.

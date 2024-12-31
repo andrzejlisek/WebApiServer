@@ -8,6 +8,13 @@ namespace WebApiServer
     {
         static List<ConnInstance> ConnInstance_;
         static int InstanceNo = 0;
+        static Timer IdleTimer;
+
+        public static void IdleTimerTick(object x)
+        {
+            ApiFile.IdleTimerTick();
+            ApiConn.IdleTimerTick();
+        }
 
         static void Main(string[] args)
         {
@@ -18,6 +25,10 @@ namespace WebApiServer
             }
             else
             {
+                if (CommandArgs.Timeout > 0)
+                {
+                    IdleTimer = new Timer(new TimerCallback(IdleTimerTick), null, 60000, 60000);
+                }
                 ConnInstance.StartListen(CommandArgs.PortNo);
                 ConnInstance_ = new List<ConnInstance>();
                 NewInstance();

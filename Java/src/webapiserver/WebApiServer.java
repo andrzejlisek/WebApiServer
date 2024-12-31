@@ -6,11 +6,20 @@
 package webapiserver;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WebApiServer
 {
     static ArrayList<ConnInstance> ConnInstance_;
     static int InstanceNo = 0;
+    static Timer IdleTimer;
+    
+    public static void IdleTimerTick()
+    {
+        ApiFile.IdleTimerTick();
+        ApiConn.IdleTimerTick();
+    }
     
     public static void main(String[] args)
     {
@@ -21,6 +30,17 @@ public class WebApiServer
         }
         else
         {
+            if (CommandArgs.Timeout > 0)
+            {
+                IdleTimer = new Timer();
+                IdleTimer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run()
+                    {
+                        IdleTimerTick();
+                    }
+                }, 60000, 60000);
+            }
             ConnInstance.StartListen(CommandArgs.PortNo);
             ConnInstance_ = new ArrayList<ConnInstance>();
             NewInstance();

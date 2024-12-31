@@ -14,6 +14,45 @@ namespace WebApiServer
         static Dictionary<int, ApiConn> ApiConn_;
         static int ApiConnN = 0;
 
+        public static void IdleTimerTick()
+        {
+            if (CommandArgs.Debug == 2)
+            {
+                Console.WriteLine("Conn IdleTimer tick begin");
+            }
+            List<int> TimeoutId = new List<int>();
+            foreach (KeyValuePair<int, ApiConn> item in ApiConn_)
+            {
+                item.Value.IdleCounter++;
+                if ((CommandArgs.Timeout > 0) && (item.Value.IdleCounter >= CommandArgs.Timeout))
+                {
+                    TimeoutId.Add(item.Key);
+                }
+                if (CommandArgs.Debug == 2)
+                {
+                    Console.WriteLine("Conn " + item.Key + " idle: " + item.Value.IdleCounter);
+                }
+            }
+            if (TimeoutId.Count > 0)
+            {
+                KeyValue XI = new KeyValue();
+                KeyValue XO = new KeyValue();
+                for (int i = 0; i < TimeoutId.Count; i++)
+                {
+                    XI.ParamSet("ConnId", TimeoutId[i]);
+                    ConnClose(XI, XO);
+                    if (CommandArgs.Debug == 2)
+                    {
+                        Console.WriteLine("Conn " + TimeoutId[i] + " closed");
+                    }
+                }
+            }
+            if (CommandArgs.Debug == 2)
+            {
+                Console.WriteLine("Conn IdleTimer tick end");
+            }
+        }
+
         public static void ConnOpen(KeyValue MessageI, KeyValue MessageO, ConnInstance ConnInstance_)
         {
             string Address = MessageI.ParamGetS("Address");
@@ -29,6 +68,7 @@ namespace WebApiServer
                     __ = new ApiConnApp();
                     break;
             }
+            __.IdleCounter = 0;
             ApiConnN++;
             __.ConnId = ApiConnN;
             __.ConnInstance_ = ConnInstance_;
@@ -52,6 +92,7 @@ namespace WebApiServer
             if (ApiConn_.ContainsKey(ConnId))
             {
                 ApiConn __ = ApiConn_[ConnId];
+                __.IdleCounter = 0;
                 MessageO.ParamSet("Status", __.Status());
                 MessageO.ParamSet("Push", __.Push);
             }
@@ -89,6 +130,7 @@ namespace WebApiServer
             if (ApiConn_.ContainsKey(ConnId))
             {
                 ApiConn __ = ApiConn_[ConnId];
+                __.IdleCounter = 0;
                 try
                 {
                     __.Send(KeyValue.BinaryDecode(Data));
@@ -106,6 +148,7 @@ namespace WebApiServer
             if (ApiConn_.ContainsKey(ConnId))
             {
                 ApiConn __ = ApiConn_[ConnId];
+                __.IdleCounter = 0;
                 try
                 {
                     byte[] Temp = __.Recv();
@@ -127,6 +170,8 @@ namespace WebApiServer
 
         protected List<byte[]> RecvBuf = new List<byte[]>();
         protected int RecvBufL = 0;
+
+        public int IdleCounter = 0;
 
         public virtual void Open(string Address, bool Push_)
         {

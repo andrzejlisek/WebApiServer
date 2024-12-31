@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class CommandArgs
 {
     static KeyValue CmdArgs;
+    static int Timeout = 0;
     static int Debug = 0;
     static int PortNo = 0;
     static String[] PathMount = new String[26];
@@ -204,6 +205,7 @@ public class CommandArgs
 
         PortNo = CmdArgs.ParamGetI("PORT");
         Debug = CmdArgs.ParamGetI("DEBUG");
+        Timeout = CmdArgs.ParamGetI("TIMEOUT");
         if (CmdArgs.ParamExists("CMD"))
         {
             RegCmd = CmdArgs.ParamGetS("CMD");
@@ -225,6 +227,7 @@ public class CommandArgs
         System.out.println("Server port: " + String.valueOf(PortNo));
         System.out.println("Command pattern: " + RegCmd);
         System.out.println("Network pattern: " + RegNet);
+        System.out.println("Idle timeout: " + String.valueOf(Timeout));
         for (int I = 0; I < 26; I++)
         {
             if (PathMount[I].length() > 0)

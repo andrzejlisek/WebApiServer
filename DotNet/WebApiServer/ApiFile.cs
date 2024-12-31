@@ -17,6 +17,46 @@ namespace WebApiServer
         FileStream FS = null;
         BinaryReader FS_R = null;
         BinaryWriter FS_W = null;
+        public int IdleCounter = 0;
+
+        public static void IdleTimerTick()
+        {
+            if (CommandArgs.Debug == 2)
+            {
+                Console.WriteLine("File IdleTimer tick begin");
+            }
+            List<int> TimeoutId = new List<int>();
+            foreach (KeyValuePair<int, ApiFile> item in ApiFile_)
+            {
+                item.Value.IdleCounter++;
+                if ((CommandArgs.Timeout > 0) && (item.Value.IdleCounter >= CommandArgs.Timeout))
+                {
+                    TimeoutId.Add(item.Key);
+                }
+                if (CommandArgs.Debug == 2)
+                {
+                    Console.WriteLine("File " + item.Key + " idle: " + item.Value.IdleCounter);
+                }
+            }
+            if (TimeoutId.Count > 0)
+            {
+                KeyValue XI = new KeyValue();
+                KeyValue XO = new KeyValue();
+                for (int i = 0; i < TimeoutId.Count; i++)
+                {
+                    XI.ParamSet("FileId", TimeoutId[i]);
+                    FileClose(XI, XO);
+                    if (CommandArgs.Debug == 2)
+                    {
+                        Console.WriteLine("File " + TimeoutId[i] + " closed");
+                    }
+                }
+            }
+            if (CommandArgs.Debug == 2)
+            {
+                Console.WriteLine("File IdleTimer tick end");
+            }
+        }
 
         public static void FileDelete(KeyValue MessageI, KeyValue MessageO)
         {
@@ -56,6 +96,7 @@ namespace WebApiServer
                 bool Append = MessageI.ParamGetB("Append");
                 bool Truncate = MessageI.ParamGetB("Truncate");
                 ApiFile __ = new ApiFile();
+                __.IdleCounter = 0;
 
                 FileMode FileMode_;
                 FileAccess FileAccess_;
@@ -126,6 +167,7 @@ namespace WebApiServer
             if (ApiFile_.ContainsKey(FileId))
             {
                 ApiFile __ = ApiFile_[FileId];
+                __.IdleCounter = 0;
                 try
                 {
                     MessageO.ParamSet("Size", __.FS.Length);
@@ -156,6 +198,7 @@ namespace WebApiServer
             long Pos = MessageI.ParamGetI("Position");
             if (ApiFile_.ContainsKey(FileId))
             {
+                ApiFile_[FileId].IdleCounter = 0;
                 try
                 {
                     ApiFile_[FileId].FS.Seek(Pos, SeekOrigin.Begin);
@@ -205,6 +248,7 @@ namespace WebApiServer
             if (ApiFile_.ContainsKey(FileId))
             {
                 ApiFile __ = ApiFile_[FileId];
+                __.IdleCounter = 0;
                 try
                 {
                     byte[] Temp = new byte[Count];
@@ -229,6 +273,7 @@ namespace WebApiServer
             if (ApiFile_.ContainsKey(FileId))
             {
                 ApiFile __ = ApiFile_[FileId];
+                __.IdleCounter = 0;
                 try
                 {
                     byte[] Temp = KeyValue.BinaryDecode(Data);

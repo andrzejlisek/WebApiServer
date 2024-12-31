@@ -8,6 +8,8 @@ package webapiserver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.locks.ReentrantLock;
+import static webapiserver.ApiFile.ApiFile_;
+import static webapiserver.ApiFile.FileClose;
 
 public class ApiConn
 {
@@ -18,6 +20,44 @@ public class ApiConn
     
     static HashMap<Integer, ApiConn> ApiConn_;
     static int ApiConnN = 0;
+    
+    public static void IdleTimerTick()
+    {
+        if (CommandArgs.Debug == 2)
+        {
+            System.out.println("Conn IdleTimer tick begin");
+        }
+        ArrayList<Integer> TimeoutId = new ArrayList<Integer>();
+        ApiConn_.forEach((Key, Value) -> {
+            Value.IdleCounter++;
+            if ((CommandArgs.Timeout > 0) && (Value.IdleCounter >= CommandArgs.Timeout))
+            {
+                TimeoutId.add(Key);
+            }
+            if (CommandArgs.Debug == 2)
+            {
+                System.out.println("Conn " + Key + " idle: " + Value.IdleCounter);
+            }
+        });
+        if (TimeoutId.size() > 0)
+        {
+            KeyValue XI = new KeyValue();
+            KeyValue XO = new KeyValue();
+            for (int i = 0; i < TimeoutId.size(); i++)
+            {
+                XI.ParamSet("ConnId", TimeoutId.get(i));
+                ConnClose(XI, XO);
+                if (CommandArgs.Debug == 2)
+                {
+                    System.out.println("Conn " + TimeoutId.get(i) + " closed");
+                }
+            }
+        }
+        if (CommandArgs.Debug == 2)
+        {
+            System.out.println("Conn IdleTimer tick end");
+        }
+    }
     
     public static void ConnOpen(KeyValue MessageI, KeyValue MessageO, ConnInstance ConnInstance_)
     {
@@ -34,6 +74,7 @@ public class ApiConn
                 __ = new ApiConnApp();
                 break;
         }
+        __.IdleCounter = 0;
         ApiConnN++;
         __.ConnId = ApiConnN;
         __.ConnInstance_ = ConnInstance_;
@@ -57,6 +98,7 @@ public class ApiConn
         if (ApiConn_.containsKey(ConnId))
         {
             ApiConn __ = ApiConn_.get(ConnId);
+            __.IdleCounter = 0;
             MessageO.ParamSet("Status", __.Status());
             MessageO.ParamSet("Push", __.Push);
         }
@@ -94,6 +136,7 @@ public class ApiConn
         if (ApiConn_.containsKey(ConnId))
         {
             ApiConn __ = ApiConn_.get(ConnId);
+            __.IdleCounter = 0;
             try
             {
                 __.Send(KeyValue.BinaryDecode(Data));
@@ -111,6 +154,7 @@ public class ApiConn
         if (ApiConn_.containsKey(ConnId))
         {
             ApiConn __ = ApiConn_.get(ConnId);
+            __.IdleCounter = 0;
             try
             {
                 byte[] Temp = __.Recv();
@@ -132,6 +176,8 @@ public class ApiConn
     
     protected ArrayList<byte[]> RecvBuf = new ArrayList<>();
     protected int RecvBufL = 0;
+
+    public int IdleCounter = 0;
     
     public void Open(String Address, boolean Push_) throws Exception
     {

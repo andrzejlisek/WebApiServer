@@ -8,6 +8,7 @@ namespace WebApiServer
     public class CommandArgs
     {
         static KeyValue CmdArgs;
+        public static int Timeout = 0;
         public static int Debug = 0;
         public static int PortNo = 0;
         public static string[] PathMount = new string[26];
@@ -195,6 +196,7 @@ namespace WebApiServer
 
             PortNo = CmdArgs.ParamGetI("PORT");
             Debug = CmdArgs.ParamGetI("DEBUG");
+            Timeout = CmdArgs.ParamGetI("TIMEOUT");
             if (CmdArgs.ParamExists("CMD"))
             {
                 RegCmd = CmdArgs.ParamGetS("CMD");
@@ -216,6 +218,7 @@ namespace WebApiServer
             Console.WriteLine("Server port: " + PortNo.ToString());
             Console.WriteLine("Command pattern: " + RegCmd);
             Console.WriteLine("Network pattern: " + RegNet);
+            Console.WriteLine("Idle timeout: " + Timeout.ToString());
             for (int I = 0; I < 26; I++)
             {
                 if (PathMount[I].Length > 0)

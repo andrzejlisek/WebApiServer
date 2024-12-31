@@ -31,7 +31,7 @@ public class ApiConnApp extends ApiConn
                 int Avail = StrO.read(StreamBufO);
                 if (Avail > 0)
                 {
-                    if (CommandArgs.Debug > 0)
+                    if (CommandArgs.Debug == 1)
                     {
                         System.out.print("> ");
                         for (int i = 0; i < Avail; i++)
@@ -83,7 +83,7 @@ public class ApiConnApp extends ApiConn
                 int Avail = StrE.read(StreamBufE);
                 if (Avail > 0)
                 {
-                    if (CommandArgs.Debug > 0)
+                    if (CommandArgs.Debug == 1)
                     {
                         System.out.print("> ");
                         for (int i = 0; i < Avail; i++)
@@ -251,7 +251,7 @@ public class ApiConnApp extends ApiConn
 
     public void Send(byte[] Data) throws Exception
     {
-        if (CommandArgs.Debug > 0)
+        if (CommandArgs.Debug == 1)
         {
             System.out.print("< ");
             for (int i = 0; i < Data.length; i++)

@@ -24,7 +24,7 @@ namespace WebApiServer
                     int Avail = StrO.Read(StreamBufO, 0, StreamBufO.Length);
                     if (Avail > 0)
                     {
-                        if (CommandArgs.Debug > 0)
+                        if (CommandArgs.Debug == 1)
                         {
                             Console.Write("> ");
                             for (int i = 0; i < Avail; i++)
@@ -76,7 +76,7 @@ namespace WebApiServer
                     int Avail = StrE.Read(StreamBufE, 0, StreamBufE.Length);
                     if (Avail > 0)
                     {
-                        if (CommandArgs.Debug > 0)
+                        if (CommandArgs.Debug == 1)
                         {
                             Console.Write("> ");
                             for (int i = 0; i < Avail; i++)
@@ -266,7 +266,7 @@ namespace WebApiServer
 
         public override void Send(byte[] Data)
         {
-            if (CommandArgs.Debug > 0)
+            if (CommandArgs.Debug == 1)
             {
                 Console.Write("< ");
                 for (int i = 0; i < Data.Length; i++)
