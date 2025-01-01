@@ -23,6 +23,21 @@ namespace WebApiServer
             Mtx = new Mutex();
         }
 
+        static void LoopWait()
+        {
+            if (CommandArgs.LoopWait > 0)
+            {
+                try
+                {
+                    Thread.Sleep(CommandArgs.LoopWait);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+        }
+
         public ConnInstance(int InstanceNo_)
         {
             InstanceNo = InstanceNo_;
@@ -87,6 +102,7 @@ namespace WebApiServer
                 {
                     while (!stream.DataAvailable)
                     {
+                        LoopWait();
                     }
                     byte[] bytes = new byte[client.Available];
                     stream.Read(bytes, 0, bytes.Length);
@@ -126,6 +142,7 @@ namespace WebApiServer
                 {
                     while (!stream.DataAvailable)
                     {
+                        LoopWait();
                     }
                     byte[] bytes = new byte[client.Available];
                     stream.Read(bytes, 0, bytes.Length);

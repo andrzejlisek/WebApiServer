@@ -32,6 +32,21 @@ public class ConnInstance
         Mtx = new ReentrantLock(true);
     }
 
+    static void LoopWait()
+    {
+        if (CommandArgs.LoopWait > 0)
+        {
+            try
+            {
+                Thread.sleep(CommandArgs.LoopWait);
+            }
+            catch(Exception e)
+            {
+
+            }
+        }
+    }
+
     public ConnInstance(int InstanceNo_)
     {
         InstanceNo = InstanceNo_;
@@ -118,6 +133,7 @@ public class ConnInstance
             {
                 while (stream_i.available() == 0)
                 {
+                    LoopWait();
                 }
                 byte[] bytes = new byte[stream_i.available()];
                 stream_i.read(bytes, 0, bytes.length);
@@ -159,6 +175,7 @@ public class ConnInstance
             {
                 while (stream_i.available() == 0)
                 {
+                    LoopWait();
                 }
                 byte[] bytes = new byte[stream_i.available()];
                 stream_i.read(bytes, 0, bytes.length);

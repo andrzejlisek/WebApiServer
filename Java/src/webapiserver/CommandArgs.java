@@ -14,16 +14,17 @@ import java.util.ArrayList;
  */
 public class CommandArgs
 {
-    static KeyValue CmdArgs;
-    static int Timeout = 0;
-    static int Debug = 0;
-    static int PortNo = 0;
-    static String[] PathMount = new String[26];
-    static String RegCmd = "^$"; // "^.*$"
-    static String RegNet = "^$"; // "^.*$"
-    static String MountAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    static String PathDirSep = "/";
-    static boolean PathDirNotSlash = false;
+    private static KeyValue CmdArgs;
+    public static int Timeout = 0;
+    public static int Debug = 0;
+    public static int PortNo = 0;
+    public static int LoopWait = 0;
+    public static String[] PathMount = new String[26];
+    public static String RegCmd = "^$"; // "^.*$"
+    public static String RegNet = "^$"; // "^.*$"
+    private static String MountAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static String PathDirSep = "/";
+    private static boolean PathDirNotSlash = false;
 
     static String PathCorrect(String PathName, int Sep)
     {
@@ -206,6 +207,7 @@ public class CommandArgs
         PortNo = CmdArgs.ParamGetI("PORT");
         Debug = CmdArgs.ParamGetI("DEBUG");
         Timeout = CmdArgs.ParamGetI("TIMEOUT");
+        LoopWait = CmdArgs.ParamGetI("LOOPWAIT");
         if (CmdArgs.ParamExists("CMD"))
         {
             RegCmd = CmdArgs.ParamGetS("CMD");
@@ -228,6 +230,7 @@ public class CommandArgs
         System.out.println("Command pattern: " + RegCmd);
         System.out.println("Network pattern: " + RegNet);
         System.out.println("Idle timeout: " + String.valueOf(Timeout));
+        System.out.println("Loop wait time: " + String.valueOf(LoopWait));
         for (int I = 0; I < 26; I++)
         {
             if (PathMount[I].length() > 0)

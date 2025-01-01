@@ -7,16 +7,17 @@ namespace WebApiServer
 {
     public class CommandArgs
     {
-        static KeyValue CmdArgs;
+        private static KeyValue CmdArgs;
         public static int Timeout = 0;
         public static int Debug = 0;
         public static int PortNo = 0;
+        public static int LoopWait = 0;
         public static string[] PathMount = new string[26];
         public static string RegCmd = "^$"; // "^.*$"
         public static string RegNet = "^$"; // "^.*$"
-        static string MountAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        static string PathDirSep = "/";
-        static bool PathDirNotSlash = false;
+        private static string MountAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private static string PathDirSep = "/";
+        private static bool PathDirNotSlash = false;
 
         static string PathCorrect(string PathName, int Sep)
         {
@@ -197,6 +198,7 @@ namespace WebApiServer
             PortNo = CmdArgs.ParamGetI("PORT");
             Debug = CmdArgs.ParamGetI("DEBUG");
             Timeout = CmdArgs.ParamGetI("TIMEOUT");
+            LoopWait = CmdArgs.ParamGetI("LOOPWAIT");
             if (CmdArgs.ParamExists("CMD"))
             {
                 RegCmd = CmdArgs.ParamGetS("CMD");
@@ -219,6 +221,7 @@ namespace WebApiServer
             Console.WriteLine("Command pattern: " + RegCmd);
             Console.WriteLine("Network pattern: " + RegNet);
             Console.WriteLine("Idle timeout: " + Timeout.ToString());
+            Console.WriteLine("Loop wait time: " + LoopWait.ToString());
             for (int I = 0; I < 26; I++)
             {
                 if (PathMount[I].Length > 0)
